@@ -1,0 +1,26 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Home - Music Tracker{% endblock %}
+
+{% block content %}
+<h1>Music Dashboard</h1>
+
+<div class="card-grid">
+    <div class="card">
+        <h2>Artists</h2>
+        <p>{{ artist_count }}</p>
+    </div>
+    <div class="card">
+        <h2>Albums</h2>
+        <p>{{ album_count }}</p>
+    </div>
+    <div class="card">
+        <h2>Tracks</h2>
+        <p>{{ track_count }}</p>
+    </div>
+    <div class="card">
+        <h2>Playlists</h2>
+        <p>{{ playlist_count }}</p>
+    </div>
+</div>
+{% endblock %}
