@@ -1,0 +1,30 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Playlists - Music Tracker{% endblock %}
+
+{% block content %}
+<h1>Playlists</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Genre</th>
+            <th>Subgenre</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for playlist in playlists %}
+        <tr>
+            <td><a href="{% url 'playlist_detail' playlist.id %}">{{ playlist.name }}</a></td>
+            <td>{{ playlist.genre }}</td>
+            <td>{{ playlist.subgenre }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No playlists found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
