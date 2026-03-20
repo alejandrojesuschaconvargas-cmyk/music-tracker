@@ -1,0 +1,16 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}{{ track.title }} - Music Tracker{% endblock %}
+
+{% block content %}
+<h1>{{ track.title }}</h1>
+
+<div class="detail-card">
+    <p><strong>Artist:</strong> {{ track.artist.name }}</p>
+    <p><strong>Album:</strong> {{ track.album.title }}</p>
+    <p><strong>Duration:</strong> {{ track.duration_seconds }} seconds</p>
+    <p><strong>Popularity:</strong> {{ track.popularity }}</p>
+    <p><strong>Danceability:</strong> {{ track.danceability }}</p>
+    <p><strong>Energy:</strong> {{ track.energy }}</p>
+</div>
+{% endblock %}
