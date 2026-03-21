@@ -84,10 +84,15 @@ def api_album_list(request):
 
 @api_view(["GET"])
 def api_track_list(request):
-    tracks = Track.objects.select_related("artist", "album", "album__artist").all().order_by("title")[:100]
-    serializer = TrackSerializer(tracks, many=True)
-    return Response(serializer.data)
+    tracks = Track.objects.select_related("artist", "album", "album__artist").all().order_by("title")
 
+    query = request.GET.get("q")
+
+    if query:
+        tracks = tracks.filter(title__icontains=query)
+
+    serializer = TrackSerializer(tracks[:100], many=True)
+    return Response(serializer.data)
 
 @api_view(["GET"])
 def api_track_detail(request, track_id):
