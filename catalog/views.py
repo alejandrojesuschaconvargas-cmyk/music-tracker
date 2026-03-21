@@ -1,5 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Artist, Album, Track, Playlist, PlaylistTrack
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import (
+    ArtistSerializer,
+    AlbumSerializer,
+    TrackSerializer,
+    PlaylistSerializer,
+    PlaylistDetailSerializer,
+)
 
 
 def home(request):
@@ -58,4 +67,48 @@ def playlist_detail(request, playlist_id):
         "playlist_tracks": playlist_tracks,
     }
     return render(request, "catalog/playlist_detail.html", context)
+
+@api_view(["GET"])
+def api_artist_list(request):
+    artists = Artist.objects.all().order_by("name")[:100]
+    serializer = ArtistSerializer(artists, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def api_album_list(request):
+    albums = Album.objects.select_related("artist").all().order_by("title")[:100]
+    serializer = AlbumSerializer(albums, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def api_track_list(request):
+    tracks = Track.objects.select_related("artist", "album", "album__artist").all().order_by("title")[:100]
+    serializer = TrackSerializer(tracks, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def api_track_detail(request, track_id):
+    track = get_object_or_404(
+        Track.objects.select_related("artist", "album", "album__artist"),
+        id=track_id
+    )
+    serializer = TrackSerializer(track)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def api_playlist_list(request):
+    playlists = Playlist.objects.all().order_by("name")[:100]
+    serializer = PlaylistSerializer(playlists, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def api_playlist_detail(request, playlist_id):
+    playlist = get_object_or_404(Playlist, id=playlist_id)
+    serializer = PlaylistDetailSerializer(playlist)
+    return Response(serializer.data)
 
